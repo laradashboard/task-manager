@@ -91,7 +91,7 @@ class TaskManagerController extends Controller
     {
         $this->checkAuthorization(Auth::user(), ['task.edit']);
 
-        $task = $this->taskService->getTaskById($id);
+        $task = $this->taskService->getTaskById((int) $id);
         return view('taskmanager::edit', [
             'task' => $task,
             'statuses' => Task::statuses(),
