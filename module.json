@@ -1,0 +1,17 @@
+{
+    "name": "TaskManager",
+    "alias": "taskmanager",
+    "description": "",
+    "icon": "bi-list-task",
+    "keywords": [
+        "task",
+        "manager",
+        "todo",
+        "list"
+    ],
+    "priority": 0,
+    "providers": [
+        "Modules\\TaskManager\\Providers\\TaskManagerServiceProvider"
+    ],
+    "files": []
+}

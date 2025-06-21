@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/taskmanager",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\TaskManager\\": "app/",
+            "Modules\\TaskManager\\Database\\Factories\\": "database/factories/",
+            "Modules\\TaskManager\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\TaskManager\\Tests\\": "tests/"
+        }
+    }
+}
