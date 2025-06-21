@@ -87,7 +87,7 @@ class TaskManagerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $this->checkAuthorization(Auth::user(), ['task.edit']);
 
@@ -109,12 +109,12 @@ class TaskManagerController extends Controller
         ]);
     }
 
-    public function update(TaskRequest $request, $id): RedirectResponse
+    public function update(TaskRequest $request, int $id): RedirectResponse
     {
         $this->checkAuthorization(Auth::user(), ['task.edit']);
 
         try {
-            $task = $this->taskService->getTaskById($id);
+            $task = $this->taskService->getTaskById((int) $id);
             $this->taskService->updateTask($task, $request->validated());
             $this->storeActionLog(ActionType::UPDATED, ['task' => $task]);
             return redirect()->route('admin.tasks.index')->with('success', __('Task updated successfully.'));
@@ -123,12 +123,12 @@ class TaskManagerController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->checkAuthorization(Auth::user(), ['task.delete']);
 
         try {
-            $task = $this->taskService->getTaskById($id);
+            $task = $this->taskService->getTaskById((int) $id);
             $this->taskService->deleteTask($task);
             $this->storeActionLog(ActionType::DELETED, ['task' => $task]);
             return redirect()->route('admin.tasks.index')->with('success', __('Task deleted successfully.'));
