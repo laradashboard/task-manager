@@ -3,6 +3,16 @@
 This is a simple Task Manager Free module for Lara Dashboard. It allows you to create, update, and delete tasks, as well as manage task statuses.
 Its an example official module for Lara Dashboard, showcasing how to create a module with CRUD operations.
 
+## Youtube Tutorial
+Step by step guide how to add a module in Lara Dashboard easily -
+
+[![Watch the video](https://github.com/user-attachments/assets/c96b56a5-76f1-4d51-8352-77af27727c03)](https://youtu.be/rUW4vCSjSiI)
+
+or try direct URL - https://youtu.be/rUW4vCSjSiI
+
+## Documentation
+https://laradashboard.com/docs/how-to-build-a-full-featured-task-management-module-in-lara-dashboard-step-by-step-guide/
+
 ## Features
 - Create, update, and delete tasks
 - Manage task statuses (e.g., pending, completed)
