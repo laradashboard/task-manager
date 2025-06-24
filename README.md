@@ -6,7 +6,7 @@ Its an example official module for Lara Dashboard, showcasing how to create a mo
 ## Youtube Tutorial
 Step by step guide how to add a module in Lara Dashboard easily -
 
-[![Watch the video](https://github.com/user-attachments/assets/c96b56a5-76f1-4d51-8352-77af27727c03)](https://youtu.be/rUW4vCSjSiI)
+[![Watch the video](https://github.com/user-attachments/assets/8bbd5b0a-6039-4e2c-89c1-3c3c5763fa6b)](https://youtu.be/rUW4vCSjSiI)
 
 or try direct URL - https://youtu.be/rUW4vCSjSiI
 
