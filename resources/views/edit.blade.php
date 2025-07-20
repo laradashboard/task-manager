@@ -26,5 +26,5 @@
 @endsection
 
 @push('scripts')
-<x-quill-editor :type="'basic'" :editor-id="'description'" />
+<x-quill-editor :editor-id="'description'" />
 @endpush

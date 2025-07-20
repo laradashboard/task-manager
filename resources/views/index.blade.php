@@ -7,92 +7,88 @@
 @section('admin-content')
 
 <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6" x-data="{ selectedTasks: [], selectAll: false, bulkDeleteModalOpen: false }">
-    <x-breadcrumbs :breadcrumbs="$breadcrumbs">
-        <x-slot name="title_after">
-            @can('task.view')
-            <a href="{{ route('admin.tasks.create') }}" class="btn-primary ml-2">
-                <i class="bi bi-plus-circle mr-2"></i>
-                {{ __('New Task') }}
-            </a>
-            @endcan
-        </x-slot>
-    </x-breadcrumbs>
+    <x-breadcrumbs :breadcrumbs="$breadcrumbs" />
 
     {!! ld_apply_filters('tasks_after_breadcrumbs', '') !!}
 
     <div class="space-y-6">
         <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
           <div class="px-5 py-4 sm:px-6 sm:py-5 flex gap-3 md:gap-1 flex-col md:flex-row justify-between items-center">
-                <h3 class="text-base font-medium text-gray-800 dark:text-white/90 hidden md:block">
-                    {{ __('Tasks') }}
-                </h3>
-
                 @include('backend.partials.search-form', [
                     'placeholder' => __('Search by title'),
                 ])
 
-                <div class="flex items-center gap-2">
-                    <!-- Bulk Actions dropdown -->
-                    <div class="flex items-center justify-center" x-show="selectedTasks.length > 0">
-                        <button id="bulkActionsButton" data-dropdown-toggle="bulkActionsDropdown" class="btn-danger flex items-center justify-center gap-2 text-sm" type="button">
-                            <i class="bi bi-trash"></i>
-                            <span>{{ __('Bulk Actions') }} (<span x-text="selectedTasks.length"></span>)</span>
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
+                <div class="flex items-center justify-end w-full md:w-auto gap-4">
+                    <div class="flex items-center gap-2">
+                        <!-- Bulk Actions dropdown -->
+                        <div class="flex items-center justify-center" x-show="selectedTasks.length > 0">
+                            <button id="bulkActionsButton" data-dropdown-toggle="bulkActionsDropdown" class="btn-danger flex items-center justify-center gap-2 text-sm" type="button">
+                                <i class="bi bi-trash"></i>
+                                <span>{{ __('Bulk Actions') }} (<span x-text="selectedTasks.length"></span>)</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
 
-                        <!-- Bulk Actions dropdown menu -->
-                        <div id="bulkActionsDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                            <h6 class="mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Bulk Actions') }}</h6>
-                            <ul class="space-y-2">
-                                <li class="cursor-pointer text-sm text-red-600 dark:text-red-400 hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                    @click="bulkDeleteModalOpen = true">
-                                    <i class="bi bi-trash mr-1"></i> {{ __('Delete Selected') }}
-                                </li>
-                            </ul>
+                            <!-- Bulk Actions dropdown menu -->
+                            <div id="bulkActionsDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                                <h6 class="mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Bulk Actions') }}</h6>
+                                <ul class="space-y-2">
+                                    <li class="cursor-pointer text-sm text-red-600 dark:text-red-400 hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
+                                        @click="bulkDeleteModalOpen = true">
+                                        <i class="bi bi-trash mr-1"></i> {{ __('Delete Selected') }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center gap-2">
+                            <button id="priorityDropdownButton" data-dropdown-toggle="priorityDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
+                                <i class="bi bi-sliders"></i>
+                                {{ __('Filter by Priority') }}
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                            <div id="priorityDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                                <ul class="space-y-2">
+                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
+                                        onclick="handleFilter('', 'priority')">
+                                        {{ __('All Priorities') }}
+                                    </li>
+                                    @foreach ($priorities as $key => $priority)
+                                        <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
+                                            onclick="handleFilter('{{ $key }}', 'priority')">
+                                            {{ ucfirst($priority) }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <button id="statusDropdownButton" data-dropdown-toggle="statusDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
+                                <i class="bi bi-sliders"></i>
+                                {{ __('Filter by Status') }}
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                            <div id="statusDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                                <ul class="space-y-2">
+                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
+                                        onclick="handleFilter('', 'status')">
+                                        {{ __('All Statuses') }}
+                                    </li>
+                                    @foreach ($statuses as $key => $status)
+                                        <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
+                                            onclick="handleFilter('{{ $key }}', 'status')">
+                                            {{ ucfirst($status) }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-center gap-2">
-                        <button id="priorityDropdownButton" data-dropdown-toggle="priorityDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
-                            <i class="bi bi-sliders"></i>
-                            {{ __('Filter by Priority') }}
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        <div id="priorityDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                            <ul class="space-y-2">
-                                <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                    onclick="handleFilter('', 'priority')">
-                                    {{ __('All Priorities') }}
-                                </li>
-                                @foreach ($priorities as $key => $priority)
-                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                        onclick="handleFilter('{{ $key }}', 'priority')">
-                                        {{ ucfirst($priority) }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <button id="statusDropdownButton" data-dropdown-toggle="statusDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
-                            <i class="bi bi-sliders"></i>
-                            {{ __('Filter by Status') }}
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        <div id="statusDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                            <ul class="space-y-2">
-                                <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                    onclick="handleFilter('', 'status')">
-                                    {{ __('All Statuses') }}
-                                </li>
-                                @foreach ($statuses as $key => $status)
-                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                        onclick="handleFilter('{{ $key }}', 'status')">
-                                        {{ ucfirst($status) }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+                    @can('task.view')
+                    <a href="{{ route('admin.tasks.create') }}" class="btn-primary ml-2">
+                        <iconify-icon icon="feather:plus" class="mr-2"></iconify-icon>
+                        {{ __('New Task') }}
+                    </a>
+                    @endcan
                 </div>
             </div>
             <div class="space-y-3 border-t border-gray-100 dark:border-gray-800 overflow-x-auto overflow-y-visible">

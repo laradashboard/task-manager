@@ -1,10 +1,9 @@
-
 <form action="{{ $action }}" method="POST">
     @method($method ?? 'POST')
     @csrf
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-            <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-400">{{ __('Task Title') }}</label>
+            <label for="title" class="form-label">{{ __('Task Title') }}</label>
             <input type="text" name="title" id="title" required autofocus value="{{ old('title', $task->title ?? '') }}" placeholder="{{ __('Enter Task Title') }}" class="form-control">
         </div>
         <div>
@@ -39,7 +38,7 @@
         </div>
     </div>
     <div class="mt-4">
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-400">{{ __('Description') }}</label>
+        <label for="description" class="form-contorl">{{ __('Description') }}</label>
         <textarea name="description" id="description" rows="10">{!! old('description', $task->description ?? '') !!}</textarea>
     </div>
     <div class="mt-6 flex justify-start gap-4">

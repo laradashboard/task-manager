@@ -1,16 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Modules\TaskManager\Providers;
 
+use App\Services\MenuService\AdminMenuItem;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use App\Services\MenuService\AdminMenuItem;
-use Illuminate\Support\Facades\Route;
 
 class TaskManagerServiceProvider extends ServiceProvider
 {
@@ -41,9 +39,9 @@ class TaskManagerServiceProvider extends ServiceProvider
     {
         $childMenusItems = [
             (new AdminMenuItem())->setAttributes([
-                'label' => __('Tasks List'),
+                'label' => __('Tasks'),
                 'route' => route('admin.tasks.index'),
-                'active' => Route::is('admin.tasks.index'),
+                'active' => Route::is('admin.tasks.index') || Route::is('admin.tasks.edit'),
                 'priority' => 1,
                 'id' => 'tasks_manager_index',
                 'permissions' => ['task.view'],
@@ -60,7 +58,7 @@ class TaskManagerServiceProvider extends ServiceProvider
 
         $adminMenuItem = (new AdminMenuItem())->setAttributes([
             'label' => __('Task Manager'),
-            'iconClass' => 'bi bi-list-task',
+            'icon' => 'lucide:list-todo',
             'route' => route('admin.tasks.index'),
             'active' => Route::is('admin.tasks.*'),
             'id' => 'task-manager',
