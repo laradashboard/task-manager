@@ -179,7 +179,14 @@
                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4 sm:px-6">{{ $statuses[$task->status] ?? __('Unknown') }}</td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <livewire:taskmanager::components.status-change-button
+                                        :task="$task"
+                                        :status="$task->status"
+                                        :statuses="$statuses"
+                                        :key="'status-change-' . $task->id"
+                                    />
+                                </td>
                                 <td class="px-5 py-4 sm:px-6">{{ ucfirst($task->priority) }}</td>
                                 <td class="px-5 py-4 sm:px-6">{{ $task->assigned->name ?? __('Unassigned') }}</td>
                                 @php ld_apply_filters('user_list_page_table_row_before_action', '', $task) @endphp
