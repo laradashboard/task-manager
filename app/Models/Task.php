@@ -7,7 +7,7 @@ namespace Modules\TaskManager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\TaskManager\Database\Factories\TaskFactory;
-use App\Traits\QueryBuilderTrait;
+use App\Concerns\QueryBuilderTrait;
 use App\Models\User;
 
 class Task extends Model
