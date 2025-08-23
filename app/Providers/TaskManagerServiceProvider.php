@@ -3,9 +3,11 @@
 namespace Modules\TaskManager\Providers;
 
 use App\Services\MenuService\AdminMenuItem;
+use App\Support\HookManager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Modules\TaskManager\Enums\Hooks\TaskHook;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -32,6 +34,7 @@ class TaskManagerServiceProvider extends ServiceProvider
 
         $this->app->booted(function () {
             ld_add_filter('admin_menu_groups_before_sorting', [$this, 'addTaskManagerMenu']);
+            $this->registerTaskHooks();
         });
     }
 
@@ -193,5 +196,51 @@ class TaskManagerServiceProvider extends ServiceProvider
         }
 
         return $paths;
+    }
+
+    /**
+     * Register task hooks for Task Manager module.
+     */
+    protected function registerTaskHooks(): void
+    {
+        $hookManager = app(HookManager::class);
+
+        // Example: Handle task creation
+        $hookManager->addAction(TaskHook::CREATED, function ($task) {
+            // Send notification when task is created
+        });
+
+        // Example: Handle task updates
+        $hookManager->addAction(TaskHook::UPDATED, function ($task) {
+            // Log task update activity
+        });
+
+        // Example: Handle task completion
+        $hookManager->addAction(TaskHook::COMPLETED, function ($task) {
+            // Send completion notification or update metrics
+        });
+
+        // Example: Handle task assignment
+        $hookManager->addAction(TaskHook::ASSIGNED, function ($task, $user) {
+            // Notify assigned user
+        });
+
+        // Example: Filter task status options
+        $hookManager->addFilter(TaskHook::STATUS_OPTIONS, function ($statuses) {
+            // Add custom status options for tasks
+            return $statuses;
+        });
+
+        // Example: Filter priority options
+        $hookManager->addFilter(TaskHook::PRIORITY_OPTIONS, function ($priorities) {
+            // Add custom priority options for tasks
+            return $priorities;
+        });
+
+        // Example: Filter assignable users
+        $hookManager->addFilter(TaskHook::ASSIGNABLE_USERS, function ($users) {
+            // Filter users who can be assigned to tasks
+            return $users;
+        });
     }
 }
