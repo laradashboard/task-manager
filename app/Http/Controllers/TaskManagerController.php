@@ -55,7 +55,7 @@ class TaskManagerController extends Controller
         return view('taskmanager::create', [
             'statuses' => Task::statuses(),
             'priorities' => Task::priorities(),
-            'users' => User::pluck('name', 'id')->toArray(),
+            'users' => User::pluck('first_name', 'id')->toArray(),
             'breadcrumbs' => [
                 'title' => __('Create Task'),
                 'items' => [
@@ -96,7 +96,7 @@ class TaskManagerController extends Controller
             'task' => $task,
             'statuses' => Task::statuses(),
             'priorities' => Task::priorities(),
-            'users' => User::pluck('name', 'id')->toArray(),
+            'users' => User::pluck('first_name', 'id')->toArray(),
             'breadcrumbs' => [
                 'title' => __('Edit Task'),
                 'items' => [

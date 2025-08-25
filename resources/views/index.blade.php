@@ -20,20 +20,22 @@
 
                 <div class="flex items-center justify-end w-full md:w-auto gap-4">
                     <div class="flex items-center gap-2">
-                        <!-- Bulk Actions dropdown -->
-                        <div class="flex items-center justify-center" x-show="selectedTasks.length > 0">
-                            <button id="bulkActionsButton" data-dropdown-toggle="bulkActionsDropdown" class="btn-danger flex items-center justify-center gap-2 text-sm" type="button">
+                        <!-- Bulk Actions dropdown (Alpine only) -->
+                        <div class="flex items-center justify-center relative" x-show="selectedTasks.length > 0" x-data="{ open: false }">
+                            <button type="button"
+                                class="btn-danger flex items-center justify-center gap-2 text-sm"
+                                x-on:click="open = !open"
+                                aria-haspopup="true"
+                                :aria-expanded="open"
+                            >
                                 <i class="bi bi-trash"></i>
                                 <span>{{ __('Bulk Actions') }} (<span x-text="selectedTasks.length"></span>)</span>
-                                <i class="bi bi-chevron-down"></i>
+                                <i class="bi bi-chevron-down" :class="open ? 'rotate-180 transition-transform' : 'transition-transform'"></i>
                             </button>
-
-                            <!-- Bulk Actions dropdown menu -->
-                            <div id="bulkActionsDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                <h6 class="mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Bulk Actions') }}</h6>
+                            <div x-cloak x-show="open" x-transition x-on:click.outside="open = false" class="absolute top-10 mt-2 z-10 w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
                                 <ul class="space-y-2">
                                     <li class="cursor-pointer text-sm text-red-600 dark:text-red-400 hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                        @click="bulkDeleteModalOpen = true">
+                                        @click="bulkDeleteModalOpen = true; open = false">
                                         <i class="bi bi-trash mr-1"></i> {{ __('Delete Selected') }}
                                     </li>
                                 </ul>
@@ -93,15 +95,15 @@
                     @endcan
                 </div>
             </div>
-            <div class="space-y-3 border-t border-gray-100 dark:border-gray-800 overflow-x-auto overflow-y-visible">
-                <table id="dataTable" class="w-full dark:text-gray-400">
-                    <thead class="bg-light text-capitalize">
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <th width="5%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">
+            <div class="table-responsive">
+                <table id="dataTable" class="table">
+                    <thead class="table-thead">
+                        <tr class="table-tr">
+                            <th width="3%" class="table-thead-th">
                                 <div class="flex items-center">
                                     <input
                                         type="checkbox"
-                                        class="form-checkbox h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        class="form-checkbox"
                                         x-model="selectAll"
                                         @click="
                                             selectAll = !selectAll;
@@ -112,7 +114,7 @@
                                     >
                                 </div>
                             </th>
-                            <th width="20%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">
+                            <th width="20%" class="table-thead-th">
                                 <div class="flex items-center">
                                     {{ __('Title') }}
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => request()->sort === 'title' ? '-title' : 'title']) }}" class="ml-1">
@@ -126,7 +128,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th width="10%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">
+                            <th width="10%" class="table-thead-th">
                                 <div class="flex items-center">
                                     {{ __('Status') }}
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => request()->sort === 'status' ? '-status' : 'status']) }}" class="ml-1">
@@ -140,7 +142,7 @@
                                     </a>
                                 </div>
                             </th>
-                            <th width="10%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">
+                            <th width="10%" class="table-thead-th">
                                 {{ __('Priority') }}
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => request()->sort === 'priority' ? '-priority' : 'priority']) }}" class="ml-1">
                                     @if(request()->sort === 'priority')
@@ -152,16 +154,16 @@
                                     @endif
                                 </a>
                             </th>
-                            <th width="20%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">{{ __('Assigned to') }}</th>
+                            <th width="20%" class="table-thead-th">{{ __('Assigned to') }}</th>
                             @php ld_apply_filters('user_list_page_table_header_before_action', '') @endphp
-                            <th width="15%" class="p-2 bg-gray-50 dark:bg-gray-800 dark:text-white text-left px-5">{{ __('Action') }}</th>
+                            <th width="15%" class="table-thead-th table-thead-th-last">{{ __('Action') }}</th>
                             @php ld_apply_filters('user_list_page_table_header_after_action', '') @endphp
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($tasks as $task)
-                            <tr class="{{ $loop->index + 1 != count($tasks) ?  'border-b border-gray-100 dark:border-gray-800' : '' }}">
-                                <td class="px-5 py-4 sm:px-6">
+                            <tr class="{{ $loop->index + 1 != count($tasks) ?  'table-tr' : '' }}">
+                                <td class="table-td table-td-checkbox">
                                     <input
                                         type="checkbox"
                                         class="user-checkbox form-checkbox h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -169,7 +171,7 @@
                                         x-model="selectedTasks"
                                     >
                                 </td>
-                                <td class="px-5 py-4 sm:px-6 flex items-center md:min-w-[200px]">
+                                <td class="table-td flex items-center md:min-w-[200px]">
                                     <a data-tooltip-target="tooltip-user-{{ $task->id }}" href="{{ route('admin.tasks.edit', $task->id) }}" class="flex items-center">
                                         <div class="flex flex-col">
                                             <span>{{ $task->title }}</span>
@@ -181,7 +183,7 @@
                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                     </div>
                                 </td>
-                                <td class="px-5 py-4 sm:px-6">
+                                <td class="table-td">
                                     <livewire:taskmanager::components.status-change-button
                                         :task="$task"
                                         :status="$task->status"
@@ -189,10 +191,10 @@
                                         :key="'status-change-' . $task->id"
                                     />
                                 </td>
-                                <td class="px-5 py-4 sm:px-6">{{ ucfirst($task->priority) }}</td>
-                                <td class="px-5 py-4 sm:px-6">{{ $task->assigned->name ?? __('Unassigned') }}</td>
+                                <td class="table-td">{{ ucfirst($task->priority) }}</td>
+                                <td class="table-td">{{ $task->assigned->full_name ?? __('Unassigned') }}</td>
                                 @php ld_apply_filters('user_list_page_table_row_before_action', '', $task) @endphp
-                                <td class="px-5 py-4 sm:px-6 flex justify-center">
+                                <td class="table-td flex justify-center">
                                     <x-buttons.action-buttons :label="__('Actions')" :show-label="false" align="right">
                                         @can('task.edit')
                                         <x-buttons.action-item
