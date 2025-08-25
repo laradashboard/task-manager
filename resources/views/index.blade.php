@@ -41,45 +41,47 @@
                         </div>
 
                         <div class="flex items-center justify-center gap-2">
-                            <button id="priorityDropdownButton" data-dropdown-toggle="priorityDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
-                                <i class="bi bi-sliders"></i>
-                                {{ __('Filter by Priority') }}
-                                <i class="bi bi-chevron-down"></i>
-                            </button>
-                            <div id="priorityDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                <ul class="space-y-2">
-                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                        onclick="handleFilter('', 'priority')">
-                                        {{ __('All Priorities') }}
-                                    </li>
-                                    @foreach ($priorities as $key => $priority)
-                                        <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                            onclick="handleFilter('{{ $key }}', 'priority')">
-                                            {{ ucfirst($priority) }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                            <x-dropdown
+                                buttonLabel="{{ __('Filter by Priority') }}"
+                                selected="{{ request('priority') }}"
+                                name="priority"
+                            >
+                                <button type="button"
+                                    class="px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                    onclick="handleFilter('', 'priority')"
+                                >
+                                    {{ __('All Priorities') }}
+                                </button>
+                                @foreach ($priorities as $key => $priority)
+                                    <button type="button"
+                                        class="px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                        onclick="handleFilter('{{ $key }}', 'priority')"
+                                    >
+                                        {{ ucfirst($priority) }}
+                                    </button>
+                                @endforeach
+                            </x-dropdown>
 
-                            <button id="statusDropdownButton" data-dropdown-toggle="statusDropdown" class="btn-default flex items-center justify-center gap-2" type="button">
-                                <i class="bi bi-sliders"></i>
-                                {{ __('Filter by Status') }}
-                                <i class="bi bi-chevron-down"></i>
-                            </button>
-                            <div id="statusDropdown" class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                <ul class="space-y-2">
-                                    <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                        onclick="handleFilter('', 'status')">
-                                        {{ __('All Statuses') }}
-                                    </li>
-                                    @foreach ($statuses as $key => $status)
-                                        <li class="cursor-pointer text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 px-2 py-1 rounded"
-                                            onclick="handleFilter('{{ $key }}', 'status')">
-                                            {{ ucfirst($status) }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                            <x-dropdown
+                                buttonLabel="{{ __('Filter by Status') }}"
+                                selected="{{ request('status') }}"
+                                name="status"
+                            >
+                                <button type="button"
+                                    class="px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                    onclick="handleFilter('', 'status')"
+                                >
+                                    {{ __('All Statuses') }}
+                                </button>
+                                @foreach ($statuses as $key => $status)
+                                    <button type="button"
+                                        class="px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 w-full text-left"
+                                        onclick="handleFilter('{{ $key }}', 'status')"
+                                    >
+                                        {{ ucfirst($status) }}
+                                    </button>
+                                @endforeach
+                            </x-dropdown>
                         </div>
                     </div>
 
