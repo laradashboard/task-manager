@@ -21,7 +21,7 @@ class TaskManagerDatabaseSeeder extends Seeder
             TaskPermissionsSeeder::class,
         ]);
 
-        Task::factory(20)->create();
+        Task::factory(100)->create();
 
         Model::reguard();
     }

@@ -6,7 +6,7 @@ namespace Modules\TaskManager\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class TaskPermissionsSeeder extends Seeder
 {
@@ -28,7 +28,7 @@ class TaskPermissionsSeeder extends Seeder
             ],
         ];
 
-        $roleSuperAdmin = Role::firstOrCreate(['name' => 'Superadmin']);
+        $roleSuperAdmin = Role::firstOrCreate(['name' => Role::SUPERADMIN]);
 
         for ($i = 0; $i < count($permissions); $i++) {
             $permissionGroup = $permissions[$i]['group_name'];

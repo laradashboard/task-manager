@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\TaskManager\Providers;
 
+use App\Enums\Hooks\AdminFilterHook;
 use App\Services\MenuService\AdminMenuItem;
+use App\Support\Facades\Hook;
 use App\Support\HookManager;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +37,7 @@ class TaskManagerServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
 
         $this->app->booted(function () {
-            ld_add_filter('admin_menu_groups_before_sorting', [$this, 'addTaskManagerMenu']);
+            Hook::addFilter(AdminFilterHook::ADMIN_MENU_GROUPS_BEFORE_SORTING, [$this, 'addTaskManagerMenu']);
             $this->registerTaskHooks();
         });
     }
