@@ -15,21 +15,24 @@ class TaskObserver
     /**
      * Handle the Task "created" event.
      */
-    public function created(Task $task): void {
+    public function created(Task $task): void
+    {
         $this->storeActionLog(ActionType::CREATED, ['task' => $task]);
     }
 
     /**
      * Handle the Task "updated" event.
      */
-    public function updated(Task $task): void {
+    public function updated(Task $task): void
+    {
         $this->storeActionLog(ActionType::UPDATED, ['task' => $task]);
     }
 
     /**
      * Handle the Task "deleted" event.
      */
-    public function deleted(Task $task): void {
+    public function deleted(Task $task): void
+    {
         $this->storeActionLog(ActionType::DELETED, ['task' => $task]);
     }
 }

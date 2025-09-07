@@ -70,7 +70,7 @@ class TaskDatatable extends Datatable
                 'title' => __('Actions'),
                 'sortable' => false,
                 'is_action' => true,
-            ]
+            ],
         ];
     }
 

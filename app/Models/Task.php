@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\TaskManager\Database\Factories\TaskFactory;
 use App\Models\User;
-use App\Concerns\QueryBuilderTrait;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Modules\TaskManager\Observers\TaskObserver;
 
