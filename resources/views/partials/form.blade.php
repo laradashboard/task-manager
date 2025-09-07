@@ -33,7 +33,7 @@
                 placeholder="{{ __('Select User') }}"
                 :options="collect($users)->map(fn($name, $id) => ['value' => $id, 'label' => ucfirst($name)])->values()->toArray()"
                 :selected="old('assigned_to', $task->assigned_to ?? '')"
-                :searchable="false"
+                :searchable="true"
             />
         </div>
     </div>

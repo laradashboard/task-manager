@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\TaskManager\Database\Factories\TaskFactory;
 use App\Models\User;
-use App\Concerns\QueryBuilderTrait;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Modules\TaskManager\Observers\TaskObserver;
 
+#[ObservedBy([TaskObserver::class])]
 class Task extends Model
 {
     use HasFactory;
-    use QueryBuilderTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -30,22 +31,6 @@ class Task extends Model
     protected static function newFactory(): TaskFactory
     {
         return TaskFactory::new();
-    }
-
-    /**
-     * Get searchable columns for the model.
-     */
-    protected function getSearchableColumns(): array
-    {
-        return ['title', 'status', 'priority'];
-    }
-
-    /**
-     * Get columns that should be excluded from sorting.
-     */
-    protected function getExcludedSortColumns(): array
-    {
-        return [];
     }
 
     public function assigned()
