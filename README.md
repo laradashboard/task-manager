@@ -54,6 +54,10 @@ php artisan module:enable taskamanager
 **Task Bulk Delete:**
 ![Task Bulk Delete](/screenshots/40-task-bulk-delete.png)
 
+## Versions
+- V1.0 - with basic CRUD operations - https://github.com/laradashboard/task-manager/releases/tag/v1.0
+- V2.0 - with datatable integration - https://github.com/laradashboard/task-manager/releases/tag/v2.0
+
 ## More
 
 For more information, please refer to the [Lara Dashboard documentation](https://laradashboard.com).
