@@ -9,9 +9,12 @@ use App\Services\MenuService\AdminMenuItem;
 use App\Support\Facades\Hook;
 use App\Support\HookManager;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Modules\TaskManager\Enums\Hooks\TaskHook;
+use Modules\TaskManager\Models\Task;
+use Modules\TaskManager\Policies\TaskPolicy;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -34,6 +37,7 @@ class TaskManagerServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        $this->registerPolicies();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
 
         $this->app->booted(function () {
@@ -94,6 +98,14 @@ class TaskManagerServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         // $this->commands([]);
+    }
+
+    /**
+     * Register the module policies.
+     */
+    protected function registerPolicies(): void
+    {
+        Gate::policy(Task::class, TaskPolicy::class);
     }
 
     /**

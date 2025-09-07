@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\TaskManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Modules\TaskManager\Models\Task;
 use Modules\TaskManager\Services\TaskService;
 use App\Models\User;
@@ -22,7 +21,7 @@ class TaskManagerController extends Controller
 
     public function index()
     {
-        $this->checkAuthorization(Auth::user(), ['task.view']);
+        $this->authorize('viewAny', Task::class);
 
         $this->setBreadcrumbTitle(__('Tasks'));
 
@@ -31,7 +30,7 @@ class TaskManagerController extends Controller
 
     public function create()
     {
-        $this->checkAuthorization(Auth::user(), ['task.create']);
+        $this->authorize('create', Task::class);
 
         $this->setBreadcrumbTitle(__('Create Task'))
             ->addBreadcrumbItem(__('Tasks'), route('admin.tasks.index'));
@@ -45,7 +44,7 @@ class TaskManagerController extends Controller
 
     public function store(TaskRequest $request)
     {
-        $this->checkAuthorization(Auth::user(), ['task.create']);
+        $this->authorize('create', Task::class);
 
         try {
             $this->taskService->createTask($request->validated());
@@ -58,9 +57,8 @@ class TaskManagerController extends Controller
 
     public function edit(int $id)
     {
-        $this->checkAuthorization(Auth::user(), ['task.edit']);
-
         $task = $this->taskService->getTaskById((int) $id);
+        $this->authorize('update', $task);
 
         $this->setBreadcrumbTitle(__('Edit Task'))
             ->addBreadcrumbItem(__('Tasks'), route('admin.tasks.index'));
@@ -75,9 +73,8 @@ class TaskManagerController extends Controller
 
     public function show(int $id)
     {
-        $this->checkAuthorization(Auth::user(), ['task.view']);
-
         $task = $this->taskService->getTaskById((int) $id);
+        $this->authorize('view', $task);
 
         $this->setBreadcrumbTitle(__('View Task'))
             ->addBreadcrumbItem(__('Tasks'), route('admin.tasks.index'));
@@ -92,16 +89,29 @@ class TaskManagerController extends Controller
 
     public function update(TaskRequest $request, int $id): RedirectResponse
     {
-        $this->checkAuthorization(Auth::user(), ['task.edit']);
+        $task = $this->taskService->getTaskById((int) $id);
+        $this->authorize('update', $task);
 
         try {
-            $task = $this->taskService->getTaskById((int) $id);
-
             $this->taskService->updateTask($task, $request->validated());
 
             return redirect()->route('admin.tasks.index')->with('success', __('Task updated successfully.'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', __('Failed to update task.'));
+        }
+    }
+
+    public function destroy(int $id): RedirectResponse
+    {
+        $task = $this->taskService->getTaskById((int) $id);
+        $this->authorize('delete', $task);
+
+        try {
+            $this->taskService->deleteTask($task);
+            $this->storeActionLog(ActionType::DELETED, ['task' => $task->toArray()]);
+            return redirect()->route('admin.tasks.index')->with('success', __('Task deleted successfully.'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', __('Failed to delete task.'));
         }
     }
 }
