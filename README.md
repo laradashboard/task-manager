@@ -29,8 +29,10 @@ To install the TaskManager module, follow these steps:
 Run the command inside your Lara Dashboard project directory:
 
 ```bash
-cd Modules
-git clone https://github.com/laradashboard/TaskManager.git
+cd modules
+git clone https://github.com/laradashboard/task-manager.git
+cd ..
+php artisan module:enable taskamanager
 ```
 
 ## Screenshots
